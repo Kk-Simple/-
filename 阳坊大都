@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f4f1e9">
+<title>阳坊大都｜源自1990</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400&family=Manrope:wght@300;400;500;600&family=Noto+Serif+SC:wght@300;400;500;600&display=swap');
+:root{--black:#0b0d0c;--black2:#111512;--panel:#171c18;--ivory:#e9e6dc;--muted:#969b90;--gold:#c6a875;--gold2:#e5d1a8;--green:#78866d;--line:rgba(233,230,220,.14);--serif:"Noto Serif SC",serif;--sans:"Manrope","Microsoft YaHei",sans-serif;--mono:"DM Mono",monospace}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:90px}body{margin:0;background:var(--black);color:var(--ivory);font-family:var(--sans);overflow-x:hidden}a{color:inherit;text-decoration:none}button{font:inherit;color:inherit}
+::selection{background:var(--gold);color:#111}
+#progress{position:fixed;z-index:100;top:0;left:0;width:0;height:2px;background:linear-gradient(90deg,var(--green),var(--gold2))}
+.grain{position:fixed;inset:0;z-index:80;pointer-events:none;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+#pointer{position:fixed;z-index:90;left:0;top:0;width:8px;height:8px;border-radius:50%;background:var(--gold2);pointer-events:none;mix-blend-mode:difference;transition:transform .15s,width .3s,height .3s}
+#pointer.big{width:46px;height:46px;transform:translate(-19px,-19px);background:rgba(198,168,117,.25);border:1px solid var(--gold)}
+header{height:82px;position:fixed;z-index:70;inset:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 5.5vw;border-bottom:1px solid transparent;transition:.4s}
+header.solid{height:68px;background:rgba(11,13,12,.82);backdrop-filter:blur(20px);border-color:var(--line)}
+.logo{display:flex;align-items:center;gap:13px}.logo-mark{width:30px;height:30px;border:1px solid var(--gold);display:grid;place-items:center;transform:rotate(45deg)}.logo-mark span{font-family:var(--serif);font-size:14px;color:var(--gold);transform:rotate(-45deg)}
+.logo-text{font-size:12px;letter-spacing:.22em}.logo-text small{display:block;font:9px var(--mono);letter-spacing:.19em;color:var(--muted);margin-top:5px}
+nav{display:flex;align-items:center;gap:30px}nav a{font-size:10px;letter-spacing:.12em;color:#bfc2b8;transition:.3s}nav a:hover{color:var(--gold2)}
+.nav-index{font:9px var(--mono);color:var(--gold);margin-right:7px}
+.menu{display:none;background:none;border:0;font-size:20px}
+.kicker{font:10px var(--mono);letter-spacing:.25em;color:var(--gold);text-transform:uppercase;display:flex;align-items:center;gap:13px}.kicker:before{content:"";width:28px;height:1px;background:var(--gold)}
+h1,h2,h3,p{margin-top:0}h1,h2,h3{font-family:var(--serif);font-weight:400}h2{font-size:clamp(34px,5vw,68px);line-height:1.38;letter-spacing:.045em;margin:24px 0}
+.bodycopy{font-size:14px;line-height:2.15;color:#aeb2a8;font-weight:300;max-width:620px}
+.micro{font:9px var(--mono);letter-spacing:.16em;color:#777f73}
+.hero{min-height:100svh;position:relative;display:flex;align-items:center;padding:130px 8vw 90px;overflow:hidden;background:radial-gradient(ellipse at 72% 47%,rgba(111,129,97,.16),transparent 38%),radial-gradient(ellipse at 70% 60%,rgba(198,168,117,.08),transparent 52%),#0b0d0c}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#0b0d0c 0%,rgba(11,13,12,.94) 35%,rgba(11,13,12,.2) 100%);pointer-events:none}
+.hero-art{position:absolute;right:-3vw;top:8%;width:min(68vw,1000px);height:82%;opacity:.95}
+.hero-art svg{width:100%;height:100%;overflow:visible}
+.hero-content{position:relative;z-index:2;max-width:760px}
+.hero .kicker{margin-bottom:35px}
+.hero h1{font-size:clamp(64px,10.2vw,145px);line-height:1.08;letter-spacing:.1em;margin:0 0 22px;white-space:nowrap}
+.hero h1 .char{display:inline-block;opacity:0;transform:translateY(70px);animation:charIn 1s cubic-bezier(.16,1,.3,1) forwards}
+.hero h1 .char:nth-child(2){animation-delay:.08s}.hero h1 .char:nth-child(3){animation-delay:.16s}.hero h1 .char:nth-child(4){animation-delay:.24s}
+@keyframes charIn{to{opacity:1;transform:translateY(0)}}
+.hero-sub{font-family:var(--serif);font-size:clamp(18px,2vw,25px);letter-spacing:.28em;color:#d7d4c9;margin:0 0 35px;opacity:0;animation:fadeUp 1s .6s forwards}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+.hero-meta{display:flex;gap:22px;align-items:center;font:9px var(--mono);letter-spacing:.16em;color:#899087;opacity:0;animation:fadeUp 1s .9s forwards}
+.hero-meta i{width:48px;height:1px;background:var(--gold)}
+.hero-bottom{position:absolute;z-index:3;left:8vw;right:8vw;bottom:35px;display:flex;justify-content:space-between;align-items:center}
+.hero-bottom span{font:9px var(--mono);letter-spacing:.16em;color:#778076}
+.scroll{display:flex;align-items:center;gap:12px}.scroll b{display:block;width:48px;height:1px;background:var(--gold);transform-origin:left;animation:linePulse 2s infinite}
+@keyframes linePulse{0%,100%{transform:scaleX(.3);opacity:.5}50%{transform:scaleX(1);opacity:1}}
+.orbit{transform-origin:50% 50%;animation:orbit 36s linear infinite}.orbit.reverse{animation-direction:reverse;animation-duration:52s}
+@keyframes orbit{to{transform:rotate(360deg)}}
+.grass-lines{stroke-dasharray:5 9;animation:dash 35s linear infinite}@keyframes dash{to{stroke-dashoffset:-500}}
+.float{animation:float 8s ease-in-out infinite}@keyframes float{50%{transform:translateY(-12px)}}
+section{position:relative;padding:145px 8vw}
+.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:40px;margin-bottom:65px}
+.section-head .bodycopy{max-width:390px;margin-bottom:7px}
+.index{font:10px var(--mono);color:var(--gold);letter-spacing:.2em}
+.story{background:#111512}
+.story-grid{display:grid;grid-template-columns:1fr 1fr;gap:9vw;align-items:center}
+.story-art{height:570px;position:relative;border:1px solid var(--line);overflow:hidden;background:radial-gradient(ellipse at 50% 50%,#343d30,#171d18 68%)}
+.story-art svg{width:100%;height:100%}
+.story-art .corner{position:absolute;width:32px;height:32px;border-color:var(--gold);opacity:.7}.corner.tl{top:18px;left:18px;border-top:1px solid;border-left:1px solid}.corner.br{bottom:18px;right:18px;border-bottom:1px solid;border-right:1px solid}
+.story-caption{position:absolute;bottom:24px;left:26px;font:9px var(--mono);letter-spacing:.17em;color:#a7ac9e}
+.story-copy .bodycopy{margin:28px 0}
+.inline-data{display:flex;gap:30px;margin-top:42px;padding-top:25px;border-top:1px solid var(--line)}
+.inline-data strong{display:block;font:28px var(--serif);color:var(--gold2);font-weight:400}.inline-data span{font:9px var(--mono);color:#858d81;letter-spacing:.12em}
+.manifesto{padding:120px 8vw 130px;text-align:center;background:#dcd7ca;color:#171c17;overflow:hidden}
+.manifesto .index{color:#806b48}.manifesto h2{font-size:clamp(36px,6vw,78px);line-height:1.55;letter-spacing:.12em;margin:35px auto;max-width:1000px}
+.manifesto p{font:10px var(--mono);letter-spacing:.28em;color:#74766c}
+.manifesto .rule{height:1px;width:70px;background:#9c835b;margin:0 auto}
+.origin{background:#0d100e;overflow:hidden}
+.origin:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 76% 52%,rgba(112,132,95,.15),transparent 46%)}
+.origin-layout{display:grid;grid-template-columns:.85fr 1.15fr;gap:7vw;align-items:center;position:relative}
+.origin-visual{height:540px;position:relative;border:1px solid var(--line);background:linear-gradient(145deg,#202a20,#101511);overflow:hidden}
+.origin-visual svg{width:100%;height:100%}
+.origin-visual .label{position:absolute;left:24px;bottom:22px;font:9px var(--mono);letter-spacing:.18em;color:#aab19f}
+.origin-copy .bodycopy{margin:28px 0}
+.origin-points{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:40px}
+.point{padding-top:17px;border-top:1px solid var(--line)}
+.point b{display:block;font:19px var(--serif);font-weight:400;color:#ded9c9;margin-bottom:8px}
+.point span{font-size:11px;line-height:1.8;color:#8d9689}
+.process{background:#e0dbcf;color:#1a201a}
+.process .index{color:#8c7149}.process .bodycopy{color:#60665c}
+.process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(20,26,20,.16);border:1px solid rgba(20,26,20,.16)}
+.process-card{background:#e0dbcf;padding:30px 25px 34px;min-height:300px;transition:background .4s,transform .4s;position:relative;overflow:hidden}
+.process-card:hover{background:#ece8de;transform:translateY(-7px);z-index:2}
+.process-card .num{font:10px var(--mono);color:#92764e;letter-spacing:.2em}
+.process-icon{height:100px;margin:28px 0 22px;display:flex;align-items:center;justify-content:flex-start}
+.process-icon svg{width:100px;height:90px;overflow:visible}
+.process-card h3{font-size:22px;margin:0 0 12px}.process-card p{font-size:11px;line-height:1.9;color:#62685e;margin:0}
+.product{background:#121713}
+.product-layout{display:grid;grid-template-columns:1.05fr .95fr;gap:8vw;align-items:center}
+.pot-panel{height:590px;position:relative;background:radial-gradient(ellipse at center,#303b2e 0%,#151c16 62%,#0d100e 100%);border:1px solid var(--line);overflow:hidden}
+.pot-panel svg{width:100%;height:100%}
+.pot-panel:after{content:"";position:absolute;inset:15px;border:1px solid rgba(198,168,117,.15);pointer-events:none}
+.product-copy .bodycopy{margin:28px 0}
+.product-specs{margin-top:40px;border-top:1px solid var(--line)}
+.spec{display:grid;grid-template-columns:90px 1fr;gap:18px;padding:18px 0;border-bottom:1px solid var(--line);font-size:11px;color:#aab0a4;line-height:1.8}
+.spec b{font:12px var(--serif);color:var(--gold2);font-weight:400}
+.supply{background:#0e120f}
+.supply-flow{margin-top:65px;display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative}
+.supply-flow:before{content:"";position:absolute;top:35px;left:8%;right:8%;height:1px;background:linear-gradient(90deg,transparent,var(--gold),var(--green),transparent)}
+.supply-step{position:relative;text-align:center;padding:0 18px}
+.supply-node{width:70px;height:70px;border:1px solid rgba(198,168,117,.65);border-radius:50%;display:grid;place-items:center;margin:0 auto 25px;background:#111712;position:relative;z-index:1;box-shadow:0 0 0 8px rgba(198,168,117,.035)}
+.supply-node svg{width:33px;height:33px;stroke:var(--gold2);fill:none;stroke-width:1.1}
+.supply-step h3{font-size:20px;margin:0 0 10px}.supply-step p{font-size:11px;line-height:1.9;color:#8e978a}
+.supply-metric{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);margin-top:75px;border:1px solid var(--line)}
+.metric{background:#121713;padding:34px 38px;display:flex;align-items:center;gap:25px}
+.metric strong{font:clamp(30px,4vw,52px) var(--serif);font-weight:300;color:var(--gold2);white-space:nowrap}
+.metric span{font-size:11px;line-height:1.8;color:#9aa194}
+.timeline{background:#ded9cd;color:#1a201a;overflow:hidden}
+.timeline .index{color:#8c7149}
+.timeline-top{display:flex;justify-content:space-between;align-items:flex-end}
+.timeline-controls{display:flex;gap:8px}
+.timeline-controls button{width:42px;height:42px;border:1px solid rgba(20,26,20,.25);background:transparent;color:#20251e;cursor:pointer;transition:.3s}
+.timeline-controls button:hover{background:#20251e;color:#eee}
+.timeline-window{overflow:hidden;margin-top:65px}
+.timeline-row{display:flex;gap:18px;transition:transform .7s cubic-bezier(.2,.8,.2,1);width:max-content}
+.year-card{width:290px;min-height:250px;padding:28px;border:1px solid rgba(20,26,20,.2);position:relative;background:rgba(255,255,255,.12)}
+.year-card:before{content:"";position:absolute;top:0;left:28px;width:34px;height:2px;background:#a18559}
+.year-card strong{font:42px var(--serif);font-weight:300;color:#826b49}
+.year-card h3{font-size:20px;margin:28px 0 12px}
+.year-card p{font-size:11px;line-height:1.9;color:#666b61}
+.culture{background:#111612}
+.culture-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:55px}
+.culture-card{padding:34px 30px;min-height:260px;border:1px solid var(--line);background:linear-gradient(145deg,rgba(255,255,255,.025),transparent);transition:.4s}
+.culture-card:hover{border-color:rgba(198,168,117,.55);background:linear-gradient(145deg,rgba(198,168,117,.09),transparent);transform:translateY(-5px)}
+.culture-card .cn{font:10px var(--mono);color:var(--gold);letter-spacing:.18em}
+.culture-card h3{font-size:25px;margin:35px 0 15px}
+.culture-card p{font-size:12px;line-height:2;color:#969e91}
+.end{min-height:650px;display:grid;place-items:center;text-align:center;overflow:hidden;background:radial-gradient(ellipse at center,rgba(116,134,99,.16),transparent 50%),#0b0d0c}
+.end-art{position:absolute;width:min(70vw,780px);height:500px;opacity:.25}
+.end-content{position:relative;z-index:1}
+.end h2{font-size:clamp(44px,7vw,90px);letter-spacing:.13em;margin:25px 0}
+.end p{font:11px var(--mono);letter-spacing:.28em;color:#9aa194}
+.end-line{width:1px;height:70px;background:linear-gradient(var(--gold),transparent);margin:35px auto 0}
+footer{padding:30px 5.5vw;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;color:#737c70;font:9px var(--mono);letter-spacing:.15em}
+footer b{font:13px var(--serif);font-weight:400;color:#d4d0c4;letter-spacing:.2em}
+.reveal{opacity:0;transform:translateY(35px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+.reveal.show{opacity:1;transform:none}
+.delay1{transition-delay:.12s}.delay2{transition-delay:.24s}.delay3{transition-delay:.36s}
+@media(max-width:900px){nav{gap:15px}nav a{font-size:9px}.hero-art{width:80vw;right:-18vw;opacity:.65}.process-grid{grid-template-columns:repeat(2,1fr)}.story-grid,.origin-layout,.product-layout{grid-template-columns:1fr;gap:50px}.story-art,.origin-visual,.pot-panel{height:440px}.supply-flow{grid-template-columns:repeat(2,1fr);row-gap:45px}.supply-flow:before{display:none}.culture-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){header{height:68px;padding:0 6vw}.menu{display:block}nav{display:none;position:absolute;top:68px;left:0;right:0;padding:24px 6vw;background:rgba(11,13,12,.97);border-bottom:1px solid var(--line);flex-direction:column;align-items:flex-start}nav.open{display:flex}.hero{min-height:780px;padding:130px 7vw 100px}.hero h1{font-size:clamp(54px,14vw,85px)}.hero-art{width:125vw;height:55%;top:28%;right:-48vw;opacity:.48}.hero:after{background:linear-gradient(90deg,rgba(11,13,12,.6),rgba(11,13,12,.25)),linear-gradient(0deg,#0b0d0c,transparent 60%)}.hero-bottom{left:7vw;right:7vw;bottom:25px}section{padding:95px 7vw}.section-head,.timeline-top{display:block}.section-head .bodycopy{margin-top:25px}.story-art,.origin-visual,.pot-panel{height:350px}.inline-data{gap:18px}.inline-data strong{font-size:23px}.manifesto{padding:95px 7vw}.origin-points{gap:18px}.process-grid{grid-template-columns:1fr 1fr}.process-card{padding:22px 17px;min-height:275px}.process-icon{height:70px;margin:20px 0}.process-icon svg{height:70px}.supply-flow{grid-template-columns:1fr 1fr}.supply-step{padding:0 7px}.supply-node{width:58px;height:58px}.supply-metric{grid-template-columns:1fr}.metric{padding:25px}.culture-grid{grid-template-columns:1fr}.year-card{width:250px}.timeline-controls{margin-top:25px}footer{gap:14px;align-items:flex-start;flex-direction:column}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}.reveal{opacity:1;transform:none}}
+
+/* ===== Editorial light-luxury redesign ===== */
+:root{--black:#f4f1e9;--black2:#eeeae0;--panel:#fffdf8;--ivory:#24271f;--muted:#77796f;--gold:#a27d4d;--gold2:#8d6c43;--green:#63765c;--line:rgba(49,53,42,.16)}
+body{background:#f4f1e9;color:#252820}
+.grain{opacity:.018;mix-blend-mode:multiply}
+#pointer{background:#9b784c;mix-blend-mode:multiply}
+header{color:#282b23}header.solid{background:rgba(248,246,239,.88);border-color:rgba(45,49,39,.13);box-shadow:0 8px 30px rgba(43,39,29,.05)}
+.logo-mark{border-color:#987448}.logo-mark span{color:#987448}.logo-text small,nav a{color:#6f7168}.nav-index,.kicker,.index{color:#967247}
+.hero{background:radial-gradient(ellipse at 78% 46%,rgba(164,146,104,.20),transparent 38%),radial-gradient(ellipse at 67% 70%,rgba(108,129,91,.12),transparent 45%),linear-gradient(115deg,#fbfaf5 0%,#f0ede4 60%,#e7e2d5 100%)}
+.hero:after{background:linear-gradient(90deg,rgba(250,249,244,.99) 0%,rgba(250,249,244,.88) 34%,rgba(250,249,244,.10) 100%)}
+.hero-art{opacity:1}.hero-art svg{filter:drop-shadow(0 25px 35px rgba(89,78,54,.10))}.hero h1{color:#24271f}.hero-sub{color:#5c5c50}.hero-meta,.hero-bottom span{color:#77796e}.hero-meta i,.scroll b{background:#a17b4a}
+.bodycopy{color:#65685e}.micro{color:#777a70}
+.story,.product,.supply,.culture{background:#f4f1e9;color:#282b23}
+.story-art{background:radial-gradient(ellipse at 50% 50%,#e4dfd1,#f6f3eb 70%);border-color:rgba(67,68,54,.18)}
+.story-art svg text[fill="#e9e6dc"]{fill:#34382e}.story-art svg text[fill="#a7b09c"]{fill:#777d6e}.story-art svg g[stroke="#b9c5a9"]{stroke:#9a9b8a}
+.inline-data{border-color:rgba(49,53,42,.18)}.inline-data strong{color:#927047}.inline-data span{color:#77796f}
+.manifesto{background:#e6dfd0;color:#27291f}.manifesto .index{color:#8b6a42}.manifesto p{color:#777265}
+.origin{background:#e9e5da;color:#282b23}.origin:before{background:radial-gradient(ellipse at 76% 52%,rgba(123,139,103,.15),transparent 46%)}
+.origin-visual{background:linear-gradient(145deg,#d8ddca,#bfc9ad);border-color:rgba(67,68,54,.18)}.origin-visual .label{color:#555f4d}
+.origin-points .point{border-color:rgba(49,53,42,.2)}.point b{color:#34382e}.point span{color:#666b60}
+.process{background:#f8f6ef;color:#292c24}.process-card{background:#f8f6ef}.process-card:hover{background:#fffdf8}.process-card p{color:#686b61}
+.pot-panel{background:radial-gradient(ellipse at center,#e6ddc9 0%,#d7d0bf 62%,#c8c0ae 100%);border-color:rgba(67,68,54,.2)}.pot-panel:after{border-color:rgba(143,108,65,.25)}
+.product-specs,.spec{border-color:rgba(49,53,42,.18)}.spec{color:#64675e}.spec b{color:#927047}
+.supply{background:#eeebe2}.supply-node{background:#f8f6ef;box-shadow:0 0 0 8px rgba(151,119,74,.07);border-color:rgba(151,119,74,.65)}.supply-node svg{stroke:#8f7047}.supply-step p{color:#686b61}.supply-flow:before{border-color:rgba(151,119,74,.4)}
+.supply-metric{background:rgba(45,49,39,.14);border-color:rgba(45,49,39,.14)}.metric{background:#e4dfd3}.metric strong{color:#8c6b43}.metric span{color:#62665b}
+.timeline{background:#ded8ca;color:#292c24}.year-card{background:rgba(255,255,255,.22);border-color:rgba(40,43,35,.2)}.year-card p{color:#62665b}
+.culture{background:#f3f0e8}.culture-card{border-color:rgba(49,53,42,.17);background:rgba(255,255,255,.35)}.culture-card:hover{border-color:rgba(151,119,74,.55);background:#fffdf8}.culture-card p{color:#666a60}.culture-card h3{color:#292c24}
+.end{background:radial-gradient(ellipse at center,rgba(166,149,110,.2),transparent 52%),#e8e2d5}.end-art{opacity:.6}.end h2{color:#292c24}.end p{color:#6d6d62}.end .kicker{color:#8d6d45}
+footer{background:#e8e3d8;border-color:rgba(49,53,42,.16);color:#73756b}footer b{color:#34372f}
+.panorama{background:#f8f6ef;color:#292c24;padding-top:130px;padding-bottom:80px}
+.panorama-head{display:grid;grid-template-columns:1fr .7fr;align-items:end;gap:8vw;margin-bottom:55px}.panorama-head h2{margin-bottom:0}.panorama-head>p{max-width:440px;font-size:13px;line-height:2.1;color:#686b61;margin:0 0 10px}
+.panorama-grid{display:grid;grid-template-columns:1.25fr .85fr .85fr;grid-template-rows:270px 250px;gap:14px}
+.pan-card{position:relative;overflow:hidden;padding:27px 29px;background:#eeebe2;border:1px solid rgba(49,53,42,.12);transition:transform .5s,box-shadow .5s}
+.pan-card:hover{transform:translateY(-5px);box-shadow:0 18px 45px rgba(53,48,35,.09)}
+.pan-no{font:9px var(--mono);letter-spacing:.19em;color:#97764a}.pan-card h3{font-size:21px;margin:16px 0 10px}.pan-card p{font-size:11px;line-height:1.9;color:#696b61;max-width:330px}.pan-main{grid-row:span 2;background:linear-gradient(145deg,#e8e2d4,#f5f2e9)}.pan-main svg{position:absolute;width:90%;right:-13%;bottom:-5%;opacity:.65}.pan-big{font:clamp(48px,6vw,82px) var(--serif);line-height:1.28;letter-spacing:.08em;margin-top:30px;position:relative;z-index:1}.pan-big em{font-style:normal;color:#947349}.pan-foot{position:absolute;left:29px;bottom:28px;display:flex;flex-direction:column;gap:7px;z-index:1}.pan-foot b{font:13px var(--serif);font-weight:400}.pan-foot span,.pan-card small{font-size:10px;color:#74766c;letter-spacing:.04em}.pan-year{background:#e9e2d4}.pan-year strong{display:block;font:clamp(52px,6vw,76px) var(--serif);font-weight:300;color:#8d6b42;margin-top:24px}.pan-year h3{margin:0 0 7px}.pan-line{height:1px;background:rgba(49,53,42,.18);margin:15px 0}.pan-origin{background:#e2e8db}.pan-circle{width:106px;height:106px;border:1px solid #8c9a7d;border-radius:50%;display:grid;place-content:center;text-align:center;font:20px var(--serif);color:#52634a;margin:12px 0 10px;box-shadow:inset 0 0 0 8px rgba(255,255,255,.22)}.pan-circle small{font:8px var(--mono);letter-spacing:.14em}.pan-origin h3{margin:4px 0 8px}.pan-chain{background:#e8e5dc}.mini-flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:28px 0 18px}.mini-flow i{font-style:normal;font-size:10px;border:1px solid rgba(141,108,67,.35);padding:9px 10px;color:#55594e}.mini-flow b{font-size:12px;color:#a17c4c}.pan-craft{background:#e6ded0}.craft-stamp{position:absolute;right:28px;top:52px;width:90px;height:90px;border:1px solid #a4865b;border-radius:50%;display:grid;place-content:center;text-align:center;font:25px var(--serif);line-height:1.15;color:#927047;transform:rotate(9deg)}.pan-craft h3{margin-top:50px}.scope-tags{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 17px}.scope-tags span{font-size:10px;padding:8px 11px;background:rgba(255,255,255,.45);border:1px solid rgba(49,53,42,.12);color:#5e6257}.panorama-ribbon{margin-top:35px;padding-top:17px;border-top:1px solid rgba(49,53,42,.16);display:flex;justify-content:space-between;font:9px var(--mono);letter-spacing:.16em;color:#8b7657}.panorama-ribbon b{font-weight:400;color:#696b61}
+@media(max-width:900px){.panorama-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto}.pan-main{grid-row:span 2;min-height:510px}.panorama-head{grid-template-columns:1fr;gap:18px}}
+@media(max-width:640px){header.solid{background:rgba(248,246,239,.96)}nav{background:rgba(248,246,239,.98)}.hero:after{background:linear-gradient(90deg,rgba(250,249,244,.75),rgba(250,249,244,.28)),linear-gradient(0deg,#f4f1e9,transparent 65%)}.hero-art{opacity:.7}.panorama{padding:90px 7vw 65px}.panorama-grid{grid-template-columns:1fr;grid-template-rows:auto}.pan-main{grid-row:auto;min-height:420px}.pan-card{min-height:230px}.panorama-ribbon{gap:12px;flex-wrap:wrap}.panorama-ribbon b{order:3;width:100%}}
+
+
+/* V4 — vivid editorial system */
+:root{--ink:#24342d;--cream:#fbf8ef;--paper:#fffdf7;--jade:#2f7964;--jade2:#8bb9a1;--copper:#b66b42;--gold:#d6ad5e;--coral:#d9795c;--blue:#8aaec4;--lav:#b8a8c9}
+body{background:#fbf8ef;color:#25372f}
+section{position:relative}
+.kicker{letter-spacing:.19em}
+h2{letter-spacing:-.045em}
+.hero{background:radial-gradient(ellipse at 78% 18%,rgba(225,190,116,.34),transparent 31%),radial-gradient(ellipse at 18% 78%,rgba(104,160,132,.24),transparent 35%),linear-gradient(135deg,#f7f0df 0%,#fffdf7 48%,#e9f1e8 100%)!important;overflow:hidden}
+.hero:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,transparent 0 48px,rgba(73,111,91,.055) 49px 50px);mask-image:linear-gradient(90deg,transparent,#000 55%,transparent);pointer-events:none}
+.hero:after{content:"1990 — 2026";position:absolute;right:5vw;bottom:8vh;font:700 clamp(34px,7vw,110px)/1 Georgia,serif;color:rgba(48,91,70,.075);letter-spacing:-.06em;pointer-events:none}
+.panorama{background:linear-gradient(135deg,#fffdf7,#f1eadb 52%,#e8f0e8)!important}
+.story{background:linear-gradient(115deg,#f3eee2,#fffdf7 58%,#f6e8df)!important}
+.manifesto{background:linear-gradient(120deg,#315f50,#477d67 58%,#a4b88c)!important;color:#fff!important}
+.origin{background:radial-gradient(ellipse at 80% 20%,rgba(214,173,94,.24),transparent 34%),linear-gradient(135deg,#edf2e5,#fffaf0 60%,#e6eee8)!important}
+.process{background:linear-gradient(130deg,#fffdf7,#f4e8dc 48%,#e8f0ed)!important}
+.product{background:linear-gradient(135deg,#f5e9d7,#fffaf0 48%,#e8eee8)!important}
+.supply{background:linear-gradient(135deg,#e7f0e8,#fffdf7 55%,#f2e6d9)!important}
+.timeline{background:linear-gradient(120deg,#fffdf7,#e9eef0 50%,#f5eadb)!important}
+.culture{background:linear-gradient(135deg,#f5eee2,#fffdf7 50%,#e7f0e8)!important}
+.end{background:radial-gradient(ellipse at 50% 40%,#f5e5c7,#dbe9dc 58%,#b9d0c1)!important}
+.v4-ribbon{display:flex;gap:12px;overflow:hidden;white-space:nowrap;padding:14px 0;background:#294d40;color:#fff;font-size:12px;letter-spacing:.18em}
+.v4-ribbon span{animation:marquee 24s linear infinite;flex:none}
+@keyframes marquee{to{transform:translateX(-50%)}}
+.v4-intro{padding:84px max(5vw,24px);background:linear-gradient(115deg,#fff 0%,#f7f0e2 48%,#e4eee7 100%);overflow:hidden}
+.v4-intro-head{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:34px}
+.v4-intro-head h2{font-size:clamp(34px,5vw,68px);line-height:1.08;margin:12px 0}
+.v4-intro-head p{max-width:390px;color:#66756b;line-height:1.9}
+.v4-grid{display:grid;grid-template-columns:1.2fr .8fr .8fr;grid-template-rows:220px 220px;gap:14px}
+.v4-tile{position:relative;overflow:hidden;border-radius:22px;padding:25px;background:#fff;box-shadow:0 18px 50px rgba(44,64,49,.08);border:1px solid rgba(73,104,81,.12);isolation:isolate;transition:transform .6s cubic-bezier(.2,.8,.2,1),box-shadow .6s}
+.v4-tile:hover{transform:translateY(-8px) scale(1.012);box-shadow:0 28px 70px rgba(44,64,49,.16)}
+.v4-tile h3{font-size:23px;margin:10px 0 8px;position:relative;z-index:2}
+.v4-tile p{font-size:14px;line-height:1.85;color:#627167;max-width:310px;position:relative;z-index:2}
+.v4-tile .eyebrow{font-size:10px;letter-spacing:.2em;color:#718078;position:relative;z-index:2}
+.v4-tile .big-num{font:700 clamp(58px,8vw,104px)/.9 Georgia,serif;letter-spacing:-.08em;position:absolute;right:18px;bottom:8px;color:rgba(48,95,73,.12)}
+.v4-tile.primary{grid-row:span 2;background:linear-gradient(145deg,#2d6552,#6d9b7d);color:white}
+.v4-tile.primary p,.v4-tile.primary .eyebrow{color:rgba(255,255,255,.78)}
+.v4-tile.primary .big-num{color:rgba(255,255,255,.13);font-size:clamp(110px,17vw,220px)}
+.v4-tile.copper{background:linear-gradient(145deg,#f0d6bc,#fff7e8)}
+.v4-tile.blue{background:linear-gradient(145deg,#dceaf0,#fff)}
+.v4-tile.coral{background:linear-gradient(145deg,#f5ddd2,#fff8f1)}
+.v4-orbit{position:absolute;width:230px;height:230px;border:1px solid rgba(255,255,255,.42);border-radius:50%;right:-42px;bottom:-70px;animation:orbit 22s linear infinite}
+.v4-orbit:before,.v4-orbit:after{content:"";position:absolute;inset:18px;border:1px dashed rgba(255,255,255,.45);border-radius:50%;transform:rotate(40deg)}
+.v4-orbit:after{inset:48px;transform:rotate(-35deg)}
+@keyframes orbit{to{transform:rotate(360deg)}}
+.v4-facts{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#d9dfd5;border:1px solid #d9dfd5;margin-top:28px;border-radius:18px;overflow:hidden}
+.v4-fact{background:rgba(255,255,255,.86);padding:22px 20px;min-height:130px}
+.v4-fact strong{display:block;font:700 34px Georgia,serif;color:#39725d;margin-bottom:8px}
+.v4-fact span{font-size:12px;line-height:1.7;color:#69776e}
+.v4-detail{padding:80px max(5vw,24px);background:#fffdf7}
+.v4-detail-top{display:grid;grid-template-columns:.85fr 1.15fr;gap:40px;align-items:end;margin-bottom:28px}
+.v4-detail-top h2{font-size:clamp(32px,4.6vw,62px);line-height:1.08;margin:12px 0}
+.v4-detail-top p{line-height:1.9;color:#65736a;max-width:600px}
+.v4-window-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.v4-window{border-radius:20px;overflow:hidden;background:#f4f0e6;border:1px solid #e4dfd2;box-shadow:0 15px 42px rgba(39,57,44,.08);transition:transform .55s,box-shadow .55s}
+.v4-window:hover{transform:translateY(-7px);box-shadow:0 25px 55px rgba(39,57,44,.14)}
+.v4-window-bar{height:39px;display:flex;align-items:center;gap:6px;padding:0 14px;background:#e8e4d9}
+.v4-window-bar i{width:7px;height:7px;border-radius:50%;background:#c58b6c}
+.v4-window-bar i:nth-child(2){background:#d7b45e}.v4-window-bar i:nth-child(3){background:#7fa48a}
+.v4-window-bar small{margin-left:auto;color:#7a8078;font-size:9px;letter-spacing:.15em}
+.v4-window-body{padding:24px;min-height:225px;position:relative;overflow:hidden}
+.v4-window-body h3{font-size:22px;margin:10px 0}
+.v4-window-body p{font-size:13px;line-height:1.9;color:#65736a}
+.v4-window-body .tag{display:inline-block;padding:6px 10px;border-radius:99px;background:#fff;font-size:10px;color:#54735e;margin:3px 3px 0 0}
+.v4-window-body .shape{position:absolute;width:130px;height:130px;border-radius:50%;right:-25px;bottom:-38px;background:radial-gradient(circle at 35% 30%,#f5d8a5,#d69b60 60%,#9d633f);opacity:.62;filter:blur(.2px);animation:bob 6s ease-in-out infinite}
+.v4-window:nth-child(2) .shape{background:radial-gradient(circle at 35% 30%,#c6e2d0,#6f9e84 65%,#3e6c58)}
+.v4-window:nth-child(3) .shape{background:radial-gradient(circle at 35% 30%,#d9e9f0,#8eafc0 65%,#587d91)}
+@keyframes bob{50%{transform:translateY(-13px) rotate(8deg)}}
+.v4-marquee-panel{margin:26px 0 0;border-radius:18px;background:linear-gradient(100deg,#d5a45d,#e9c98e,#9ab8a1,#7aa6a1);padding:24px 28px;color:#263b31;display:flex;align-items:center;justify-content:space-between;gap:20px;overflow:hidden}
+.v4-marquee-panel strong{font-size:clamp(20px,3vw,34px)}
+.v4-marquee-panel span{font-size:11px;letter-spacing:.16em}
+.v4-flow{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:26px}
+.v4-flow-item{padding:18px 14px;border-radius:14px;background:#f1f5ef;border:1px solid #dfe8dd;position:relative;min-height:126px}
+.v4-flow-item:not(:last-child):after{content:"→";position:absolute;right:-12px;top:42%;z-index:2;color:#b37b4c;font-size:20px}
+.v4-flow-item b{display:block;font-size:15px;margin:8px 0}
+.v4-flow-item small{font-size:11px;color:#718077;line-height:1.6}
+.v4-flow-item em{font:italic 11px Georgia;color:#b57b4b}
+.v4-pop{position:fixed;right:22px;bottom:22px;z-index:50;background:#2e6653;color:white;border-radius:14px;padding:13px 17px;box-shadow:0 10px 35px #244d3d35;font-size:11px;letter-spacing:.08em;animation:popin 1s .8s both}
+@keyframes popin{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:translateY(0)}}
+.v4-counter{font-variant-numeric:tabular-nums}
+.v4-glow{position:absolute;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(221,176,100,.28),transparent 70%);pointer-events:none;animation:pulseGlow 5s ease-in-out infinite}
+@keyframes pulseGlow{50%{transform:scale(1.28);opacity:.55}}
+@media(max-width:850px){.v4-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto}.v4-tile.primary{grid-row:auto;grid-column:span 2;min-height:230px}.v4-tile{min-height:190px}.v4-facts{grid-template-columns:repeat(2,1fr)}.v4-detail-top{grid-template-columns:1fr;gap:10px}.v4-window-grid{grid-template-columns:1fr 1fr}.v4-flow{grid-template-columns:repeat(2,1fr)}.v4-flow-item:not(:last-child):after{display:none}}
+@media(max-width:560px){.v4-intro,.v4-detail{padding:58px 20px}.v4-intro-head{display:block}.v4-grid{grid-template-columns:1fr}.v4-tile.primary{grid-column:auto}.v4-facts{grid-template-columns:1fr 1fr}.v4-fact{padding:15px;min-height:115px}.v4-fact strong{font-size:27px}.v4-window-grid{grid-template-columns:1fr}.v4-marquee-panel{display:block}.v4-flow{grid-template-columns:1fr 1fr}}
+
+</style>
+</head>
+<body>
+<div id="progress"></div><div class="grain"></div><div id="pointer"></div>
+<header id="header">
+ <a class="logo" href="#top"><span class="logo-mark"><span>都</span></span><span class="logo-text">阳坊大都<small>YANGFANG DADU · EST. 1990</small></span></a>
+ <button class="menu" id="menu" aria-label="打开导航">☰</button>
+ <nav id="nav"><a href="#story"><i class="nav-index">01</i>品牌起源</a><a href="#origin"><i class="nav-index">02</i>草原溯源</a><a href="#process"><i class="nav-index">03</i>品质工艺</a><a href="#supply"><i class="nav-index">04</i>产业链</a><a href="#history"><i class="nav-index">05</i>品牌历程</a></nav>
+</header>
+<main id="top">
+<section class="hero">
+ <div class="hero-art" aria-hidden="true">
+  <svg viewBox="0 0 1000 800" fill="none">
+   <defs><radialGradient id="orb"><stop stop-color="#a9b28f" stop-opacity=".32"/><stop offset="1" stop-color="#a9b28f" stop-opacity="0"/></radialGradient><linearGradient id="ridge" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b9c2a5" stop-opacity=".6"/><stop offset="1" stop-color="#6f8064" stop-opacity=".04"/></linearGradient><filter id="blur"><feGaussianBlur stdDeviation="28"/></filter></defs>
+   <circle cx="570" cy="390" r="310" fill="url(#orb)" filter="url(#blur)"/>
+   <g class="orbit" stroke="#b5bd9e" stroke-opacity=".28"><ellipse cx="570" cy="390" rx="390" ry="150" transform="rotate(-27 570 390)"/><ellipse cx="570" cy="390" rx="330" ry="210" transform="rotate(32 570 390)"/><ellipse cx="570" cy="390" rx="250" ry="290" transform="rotate(72 570 390)"/></g>
+   <g class="orbit reverse" stroke="#c6a875" stroke-opacity=".45"><ellipse cx="570" cy="390" rx="440" ry="255" transform="rotate(12 570 390)"/><circle cx="570" cy="390" r="355" stroke-dasharray="2 12"/></g>
+   <path d="M80 560 Q220 470 340 510 T600 480 T930 500" stroke="url(#ridge)" stroke-width="2"/>
+   <path d="M60 620 Q220 530 360 565 T640 530 T950 565" stroke="#a9b28f" stroke-opacity=".25"/>
+   <path d="M80 680 Q240 595 390 620 T690 590 T960 620" stroke="#a9b28f" stroke-opacity=".18"/>
+   <g fill="#d8c49b" fill-opacity=".72"><circle cx="740" cy="170" r="2"/><circle cx="810" cy="250" r="3"/><circle cx="350" cy="170" r="2"/><circle cx="890" cy="440" r="2"/><circle cx="490" cy="80" r="2"/></g>
+   <g class="float" transform="translate(630 330)" stroke="#d8d0b8" stroke-opacity=".65" fill="none" stroke-width="1.2"><path d="M-75 15 Q-62 -42 -12 -39 Q28 -45 58 -10 L75 12 L60 32 L42 26 L30 58 L17 58 L13 24 L-30 26 L-42 58 L-55 58 L-53 20 L-75 15Z"/><path d="M-12 -39 Q-5 -68 22 -67 Q40 -67 48 -48 L38 -28"/><path d="M21 -66 L36 -82 L42 -61"/></g>
+   <text x="570" y="755" text-anchor="middle" fill="#c6a875" fill-opacity=".45" font-family="monospace" font-size="10" letter-spacing="6">ORIGIN · CRAFT · LEGACY</text>
+  </svg>
+ </div>
+ <div class="hero-content"><div class="kicker">A LEGACY OF TASTE · BEIJING · 1990</div><h1><span class="char">阳</span><span class="char">坊</span><span class="char">大</span><span class="char">都</span></h1><p class="hero-sub">好羊肉，清汤涮。</p><div class="hero-meta"><span>三十余年专注铜锅涮羊肉</span><i></i><span>FROM YANGFANG TO THE TABLE</span></div></div>
+ <div class="hero-bottom"><span>EST. 1990 / BRAND EXPERIENCE</span><span class="scroll">SCROLL TO DISCOVER <b></b></span><span>40°07′N&nbsp; 116°08′E</span></div>
+</section>
+
+
+<section class="panorama" id="panorama">
+ <div class="panorama-head reveal"><div><div class="kicker">BRAND AT A GLANCE / 1990—NOW</div><h2>一口涮肉背后，<br>是一整套长期主义。</h2></div><p>从阳坊出发，向草原寻味。以传统铜锅涮羊肉为核心，连接食材源头、加工体系、餐饮体验与品牌文化。</p></div>
+ <div class="panorama-grid">
+  <article class="pan-card pan-main reveal"><span class="pan-no">01 / BRAND DNA</span><div class="pan-big">好羊肉<br><em>清汤涮</em></div><div class="pan-foot"><b>品牌核心理念</b><span>尊重食材本味 · 坚持传统风味</span></div><svg viewBox="0 0 420 230" aria-hidden="true"><g fill="none" stroke="#a98755" stroke-width="1"><ellipse cx="250" cy="120" rx="160" ry="62" transform="rotate(-24 250 120)"/><ellipse cx="250" cy="120" rx="130" ry="95" transform="rotate(35 250 120)"/><circle cx="250" cy="120" r="75" stroke-dasharray="3 8"/></g><circle cx="250" cy="120" r="5" fill="#a98755"/></svg></article>
+  <article class="pan-card pan-year reveal delay1"><span class="pan-no">02 / ESTABLISHED</span><strong>1990</strong><h3>品牌始创</h3><p>源自北京昌平阳坊，三十余年专注传统铜锅涮羊肉。</p><div class="pan-line"></div><small>2001 · 公司正式注册成立</small></article>
+  <article class="pan-card pan-origin reveal delay2"><span class="pan-no">03 / INGREDIENT</span><div class="pan-circle">苏尼特<br><small>SONID</small></div><h3>核心羊肉产地</h3><p>深入内蒙古草原寻源，选择苏尼特羊，重视品种、产地与自然风味。</p></article>
+  <article class="pan-card pan-chain reveal"><span class="pan-no">04 / INDUSTRY CHAIN</span><h3>从牧场到餐桌</h3><div class="mini-flow"><i>草原牧场</i><b>→</b><i>加工基地</i><b>→</b><i>供应体系</i><b>→</b><i>餐饮门店</i></div><p>在苏尼特左旗建设肉食品加工基地，让源头选择与餐饮终端形成连接。</p></article>
+  <article class="pan-card pan-craft reveal delay1"><span class="pan-no">05 / CLASSIC CRAFT</span><div class="craft-stamp">铜<br>锅</div><h3>老北京涮肉方式</h3><p>传统铜锅 · 炭火加热 · 清汤锅底 · 鲜切羊肉</p><small>以简单方式，呈现食材本味</small></article>
+  <article class="pan-card pan-scope reveal delay2"><span class="pan-no">06 / BUSINESS SCOPE</span><h3>多元产业协同</h3><div class="scope-tags"><span>清真餐饮</span><span>品牌连锁</span><span>星级酒店</span><span>乡村酒店</span><span>肉食品加工</span><span>农业种植</span></div><p>围绕餐饮主业，延展食材、加工、服务与相关产业布局。</p></article>
+ </div>
+ <div class="panorama-ribbon"><span>YANGFANG DADU</span><b>ORIGIN　/　INGREDIENT　/　CRAFT　/　EXPERIENCE</b><span>BEIJING · CHINA</span></div>
+</section>
+
+
+<div class="v4-ribbon" aria-label="品牌关键词">
+ <span>YANGFANG DADU · 好羊肉 清汤涮 · SONID GRASSLAND · COPPER POT · TRADITION & INNOVATION · </span>
+ <span>YANGFANG DADU · 好羊肉 清汤涮 · SONID GRASSLAND · COPPER POT · TRADITION & INNOVATION · </span>
+</div>
+<section class="v4-intro" id="brand-map">
+ <div class="v4-intro-head reveal">
+  <div><div class="kicker">THE BRAND IN SIX DIMENSIONS / 品牌全景</div><h2>一口好味道，<br>背后是一整个世界。</h2></div>
+  <p>从阳坊的饮食传统，到苏尼特草原的源头寻味；从肉食品加工体系，到一桌铜锅涮肉的温度。阳坊大都以一条完整的品质逻辑，连接产地、工艺与餐桌。</p>
+ </div>
+ <div class="v4-grid">
+  <article class="v4-tile primary reveal"><div class="eyebrow">01 / BRAND BELIEF</div><h3>好羊肉，清汤涮。</h3><p>不以复杂调味掩盖食材本味。以羊肉品质为起点，以清汤、铜锅与炭火为载体，让鲜香回归本真。</p><div class="big-num">味</div><div class="v4-orbit"></div></article>
+  <article class="v4-tile copper reveal"><div class="eyebrow">02 / ORIGIN</div><h3>寻味苏尼特</h3><p>走向内蒙古锡林郭勒草原，选择苏尼特羊，关注品种、产地与自然生长环境。</p><div class="big-num">草原</div></article>
+  <article class="v4-tile blue reveal"><div class="eyebrow">03 / CRAFT</div><h3>传统铜锅炭火</h3><p>铜锅、炭火、清汤与鲜切羊肉，共同构成经典老北京涮羊肉的味觉记忆。</p><div class="big-num">铜</div></article>
+  <article class="v4-tile coral reveal"><div class="eyebrow">04 / INDUSTRY</div><h3>从牧场到餐桌</h3><p>围绕源头选材、肉食品加工、供应链协同与餐饮终端，持续完善产业链条。</p><div class="big-num">链</div></article>
+  <article class="v4-tile reveal"><div class="eyebrow">05 / EXPERIENCE</div><h3>一餐一聚的温度</h3><p>从食材、锅底、环境到服务，关注每一次家庭相聚、朋友相聚与商务宴请体验。</p><div class="big-num">聚</div></article>
+ </div>
+ <div class="v4-facts reveal">
+  <div class="v4-fact"><strong class="v4-counter">1990</strong><span>品牌始创于北京昌平阳坊<br>三十余年风味传承</span></div>
+  <div class="v4-fact"><strong>2001</strong><span>阳坊大都文化发展有限公司<br>正式注册成立</span></div>
+  <div class="v4-fact"><strong>苏尼特</strong><span>以内蒙古锡林郭勒草原<br>优质羊源为重要选择</span></div>
+  <div class="v4-fact"><strong>全链条</strong><span>源头寻访、加工体系、供应链<br>与餐饮服务协同发展</span></div>
+ </div>
+</section>
+
+<section class="story" id="story">
+ <div class="story-grid">
+  <div class="story-copy reveal"><div class="kicker">01 / THE BEGINNING</div><h2>一方阳坊，<br>一脉涮肉传承。</h2><p class="bodycopy">阳坊，因牛羊肉集散与深厚的饮食传统而闻名。这里的人们懂羊肉、爱羊肉，也对一口好味道有着自己的坚持。1990年，阳坊大都从这片土地出发，将传统铜锅涮羊肉的风味与匠心，带向更多地方。</p><p class="bodycopy">从一处地方风味，到持续发展的餐饮品牌，始终围绕一件事：认真对待羊肉，尊重食材本味。</p><div class="inline-data"><div><strong>1990</strong><span>品牌创立</span></div><div><strong>2001</strong><span>公司成立</span></div><div><strong>清真</strong><span>餐饮特色</span></div></div></div>
+  <div class="story-art reveal delay1">
+   <svg viewBox="0 0 600 600" fill="none"><defs><linearGradient id="mapg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d3c49e" stop-opacity=".85"/><stop offset="1" stop-color="#728268" stop-opacity=".1"/></linearGradient></defs>
+    <g stroke="#b9c5a9" stroke-opacity=".22" fill="none"><path d="M-20 100 Q130 30 240 105 T620 70"/><path d="M-20 140 Q120 70 260 145 T620 110"/><path d="M-20 180 Q140 110 280 185 T620 150"/><path d="M-20 220 Q160 150 300 225 T620 190"/><path d="M-20 260 Q170 190 320 265 T620 230"/><path d="M-20 300 Q180 230 340 305 T620 270"/><path d="M-20 340 Q190 270 360 345 T620 310"/><path d="M-20 380 Q200 310 380 385 T620 350"/><path d="M-20 420 Q210 350 400 425 T620 390"/></g>
+    <path d="M120 440 L170 360 L210 380 L260 280 L310 330 L360 205 L405 245 L470 130" stroke="url(#mapg)" stroke-width="2"/>
+    <path d="M120 440 L170 360 L210 380 L260 280 L310 330 L360 205 L405 245 L470 130" stroke="#d5c49d" stroke-width="1" stroke-dasharray="3 8"/>
+    <circle cx="300" cy="300" r="130" stroke="#c6a875" stroke-opacity=".45"/><circle cx="300" cy="300" r="98" stroke="#c6a875" stroke-opacity=".25" stroke-dasharray="2 8"/>
+    <circle cx="300" cy="300" r="4" fill="#e5d1a8"/><path d="M300 300 L385 230" stroke="#e5d1a8"/><text x="396" y="224" fill="#e5d1a8" font-size="12" font-family="monospace">YANGFANG</text>
+    <text x="300" y="315" text-anchor="middle" fill="#e9e6dc" font-family="serif" font-size="38" letter-spacing="8">阳坊</text><text x="300" y="345" text-anchor="middle" fill="#a7b09c" font-family="monospace" font-size="9" letter-spacing="4">BEIJING · CHINA</text>
+    <g fill="#c6a875"><circle cx="115" cy="140" r="2"/><circle cx="470" cy="420" r="2"/><circle cx="505" cy="170" r="2"/><circle cx="160" cy="500" r="2"/></g>
+   </svg><i class="corner tl"></i><i class="corner br"></i><div class="story-caption">THE ROOTS OF A LOCAL FOOD CULTURE / 1990</div>
+  </div>
+ </div>
+</section>
+
+<section class="manifesto"><div class="index reveal">THE BRAND PHILOSOPHY</div><div class="rule"></div><h2 class="reveal">好羊肉，清汤涮。<br>让食材本来的鲜美，<br>成为餐桌上的主角。</h2><p class="reveal">A SIMPLE BELIEF. A LASTING CRAFT.</p></section>
+
+<section class="origin" id="origin">
+ <div class="origin-layout">
+  <div class="origin-visual reveal">
+   <svg viewBox="0 0 650 560" fill="none">
+    <defs><linearGradient id="sun" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#d5c18e" stop-opacity=".4"/><stop offset="1" stop-color="#d5c18e" stop-opacity="0"/></linearGradient><linearGradient id="hill" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#829071"/><stop offset="1" stop-color="#28352a"/></linearGradient></defs>
+    <circle cx="470" cy="130" r="76" fill="url(#sun)"/><circle cx="470" cy="130" r="36" fill="#d5c18e" fill-opacity=".32"/>
+    <g stroke="#c4c9ad" stroke-opacity=".18"><path d="M0 130 Q150 70 310 130 T650 115"/><path d="M0 160 Q160 100 330 160 T650 145"/><path d="M0 190 Q180 130 350 190 T650 175"/></g>
+    <path d="M0 335 Q100 260 210 300 T430 280 T650 300 L650 560 L0 560Z" fill="#394938"/><path d="M0 380 Q150 300 270 350 T500 330 T650 350 L650 560 L0 560Z" fill="url(#hill)"/><path d="M0 430 Q130 370 270 400 T520 390 T650 410 L650 560 L0 560Z" fill="#26352a"/>
+    <g stroke="#9daa86" stroke-opacity=".5" fill="none"><path d="M0 455 Q120 420 220 445 T430 430 T650 450"/><path d="M0 490 Q120 455 250 480 T480 465 T650 485"/><path d="M0 520 Q160 490 300 510 T520 500 T650 520"/></g>
+    <g fill="#e3dcc8" fill-opacity=".82" stroke="#e3dcc8" stroke-width="1">
+     <g transform="translate(180 350) scale(.72)"><ellipse cx="0" cy="0" rx="35" ry="23"/><circle cx="32" cy="-10" r="12"/><path d="M-20 15 L-22 43 M10 16 L12 43 M30 0 L44 7" fill="none"/></g>
+     <g transform="translate(280 375) scale(.48)"><ellipse cx="0" cy="0" rx="35" ry="23"/><circle cx="32" cy="-10" r="12"/><path d="M-20 15 L-22 43 M10 16 L12 43 M30 0 L44 7" fill="none"/></g>
+     <g transform="translate(390 345) scale(.6)"><ellipse cx="0" cy="0" rx="35" ry="23"/><circle cx="32" cy="-10" r="12"/><path d="M-20 15 L-22 43 M10 16 L12 43 M30 0 L44 7" fill="none"/></g>
+    </g>
+    <g stroke="#d3c49e" stroke-opacity=".5" fill="none" class="grass-lines"><path d="M45 535 Q55 485 70 460 M72 545 Q82 500 100 480 M540 545 Q555 500 570 480 M580 540 Q590 500 610 470"/></g>
+    <text x="34" y="45" fill="#d5c18e" font-family="monospace" font-size="10" letter-spacing="3">SONID GRASSLAND / INNER MONGOLIA</text>
+    <text x="34" y="70" fill="#aeb8a4" font-family="serif" font-size="20" letter-spacing="5">苏尼特草原</text>
+   </svg><div class="label">SOURCE · SONID LEFT BANNER · INNER MONGOLIA</div>
+  </div>
+  <div class="origin-copy reveal delay1"><div class="kicker">02 / ORIGIN & SELECTION</div><h2>为一口好羊肉，<br>走向草原深处。</h2><p class="bodycopy">为了寻找适合铜锅涮煮的优质羊肉，阳坊大都走访内蒙古多地，最终选择苏尼特羊，并在苏尼特左旗建设肉食品加工基地。来自草原的自然风味，成为品牌坚持好羊肉的起点。</p><p class="bodycopy">苏尼特草原独特的自然环境与牧养条件，孕育了具有地域特色的羊肉风味。对产地的选择，是品牌对食材品质的长期投入。</p>
+   <div class="origin-points"><div class="point"><b>苏尼特羊</b><span>以苏尼特羊作为核心羊肉食材选择</span></div><div class="point"><b>草原风味</b><span>强调自然生长环境与肉质风味特色</span></div><div class="point"><b>源头寻访</b><span>走访内蒙古多地，确定产地与品种</span></div><div class="point"><b>基地建设</b><span>在苏尼特左旗建设肉食品加工基地</span></div></div>
+  </div>
+ </div>
+</section>
+
+<section class="process" id="process">
+ <div class="section-head reveal"><div><div class="kicker">03 / CRAFT & EXPERIENCE</div><h2>从选材到入口，<br>每一步都有讲究。</h2></div><p class="bodycopy">以好羊肉为起点，以传统铜锅炭火涮煮为载体，将鲜切技艺、清汤理念与用餐体验融为一体。</p></div>
+ <div class="process-grid">
+  <article class="process-card reveal"><span class="num">01 / SELECTION</span><div class="process-icon"><svg viewBox="0 0 110 90" fill="none"><path d="M12 68 Q25 50 40 59 Q55 30 73 50 Q90 40 100 62" stroke="#7e8b6c" stroke-width="1.5"/><path d="M20 68 Q35 78 50 68 T82 68" stroke="#9c8157"/><circle cx="75" cy="20" r="10" stroke="#9c8157"/><path d="M75 4 V0 M75 40 V36 M59 20 H55 M95 20 H91" stroke="#9c8157"/></svg></div><h3>源头选材</h3><p>从产地与品种出发，重视羊肉本身的品质与风味。</p></article>
+  <article class="process-card reveal delay1"><span class="num">02 / CUTTING</span><div class="process-icon"><svg viewBox="0 0 110 90" fill="none"><path d="M20 20 Q55 5 88 22 L77 65 Q50 80 25 62Z" stroke="#7e8b6c"/><path d="M30 28 Q55 18 80 29 M28 39 Q55 29 78 40 M27 50 Q55 40 76 51 M29 60 Q55 51 73 61" stroke="#9c8157"/><path d="M15 13 L95 78" stroke="#7e8b6c" stroke-width="1.5"/></svg></div><h3>鲜切技艺</h3><p>讲究刀工与厚薄，形成“薄如纸、软如棉”的切肉记忆。</p></article>
+  <article class="process-card reveal delay2"><span class="num">03 / BROTH</span><div class="process-icon"><svg viewBox="0 0 110 90" fill="none"><path d="M20 48 Q55 65 90 48 L82 75 Q55 88 28 75Z" stroke="#7e8b6c"/><path d="M26 49 Q55 61 84 49" stroke="#9c8157"/><path d="M40 38 Q30 25 42 13 M58 38 Q48 22 60 7 M75 38 Q65 25 77 15" stroke="#9c8157" stroke-linecap="round"/></svg></div><h3>清汤涮煮</h3><p>以清汤衬托羊肉本味，让食材鲜美成为主角。</p></article>
+  <article class="process-card reveal delay3"><span class="num">04 / TABLE</span><div class="process-icon"><svg viewBox="0 0 110 90" fill="none"><circle cx="55" cy="44" r="31" stroke="#7e8b6c"/><circle cx="55" cy="44" r="23" stroke="#9c8157"/><path d="M55 13 V75 M24 44 H86 M34 23 L76 65 M76 23 L34 65" stroke="#7e8b6c" stroke-opacity=".6"/><circle cx="55" cy="44" r="5" fill="#9c8157"/></svg></div><h3>围炉共享</h3><p>以舒适环境与周到服务，让一餐美味成为相聚时刻。</p></article>
+ </div>
+</section>
+
+<section class="product">
+ <div class="product-layout">
+  <div class="pot-panel reveal">
+   <svg viewBox="0 0 600 600" fill="none">
+    <defs><radialGradient id="copper"><stop stop-color="#d5b985" stop-opacity=".38"/><stop offset=".7" stop-color="#8f6842" stop-opacity=".15"/><stop offset="1" stop-color="#2a2118" stop-opacity="0"/></radialGradient><linearGradient id="metal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ead4a7"/><stop offset=".4" stop-color="#92704a"/><stop offset=".7" stop-color="#d8bd8b"/><stop offset="1" stop-color="#59432f"/></linearGradient></defs>
+    <circle cx="300" cy="300" r="245" fill="url(#copper)"/>
+    <g stroke="#c6a875" stroke-opacity=".22"><circle cx="300" cy="300" r="220"/><circle cx="300" cy="300" r="190" stroke-dasharray="2 10"/><circle cx="300" cy="300" r="155"/></g>
+    <ellipse cx="300" cy="325" rx="185" ry="105" fill="#151915" stroke="url(#metal)" stroke-width="9"/>
+    <path d="M115 325 Q128 430 300 445 Q472 430 485 325" fill="#24231d" stroke="url(#metal)" stroke-width="7"/>
+    <ellipse cx="300" cy="325" rx="173" ry="91" fill="#c2a77c" fill-opacity=".12" stroke="#d5c096" stroke-opacity=".8" stroke-width="2"/>
+    <ellipse cx="300" cy="324" rx="151" ry="72" fill="#e2d5b5" fill-opacity=".08" stroke="#c6a875" stroke-opacity=".45"/>
+    <g stroke="#e2d2ad" stroke-opacity=".55" stroke-width="2"><path d="M205 308 Q245 285 285 310 T375 305"/><path d="M190 334 Q240 312 290 338 T390 330"/><path d="M230 355 Q270 340 315 356 T370 350"/></g>
+    <g stroke="#d9c7a4" stroke-width="2" stroke-linecap="round" opacity=".65"><path d="M250 260 Q225 220 250 185"/><path d="M300 250 Q275 205 305 160"/><path d="M350 260 Q335 220 365 190"/></g>
+    <g stroke="#c6a875" stroke-opacity=".6"><path d="M115 325 L75 300 M485 325 L525 300"/><circle cx="75" cy="300" r="9"/><circle cx="525" cy="300" r="9"/></g>
+    <text x="300" y="505" fill="#d7c29b" font-family="serif" font-size="21" text-anchor="middle" letter-spacing="8">铜锅炭火</text><text x="300" y="530" fill="#899282" font-family="monospace" font-size="9" text-anchor="middle" letter-spacing="4">THE CLASSIC COPPER POT</text>
+    <g class="orbit" stroke="#c6a875" stroke-opacity=".4"><ellipse cx="300" cy="300" rx="265" ry="115" transform="rotate(-24 300 300)"/></g>
+   </svg>
+  </div>
+  <div class="product-copy reveal delay1"><div class="kicker">04 / THE CLASSIC WAY</div><h2>铜锅炭火，<br>涮出羊肉本味。</h2><p class="bodycopy">传统铜锅与炭火，是老北京涮羊肉的经典记忆。清汤为底，鲜切羊肉入锅，在恰当的火候之间，呈现羊肉细嫩鲜香的本味。</p><div class="product-specs"><div class="spec"><b>铜锅</b><span>传统器具，承载老北京涮肉文化</span></div><div class="spec"><b>炭火</b><span>以传统加热方式营造独特用餐体验</span></div><div class="spec"><b>清汤</b><span>突出食材本味，体现“好羊肉，清汤涮”理念</span></div><div class="spec"><b>鲜切</b><span>讲究切肉厚薄与涮煮时机，追求细嫩口感</span></div></div></div>
+ </div>
+</section>
+
+<section class="supply" id="supply">
+ <div class="reveal"><div class="kicker">05 / FROM ORIGIN TO TABLE</div><h2>让好羊肉的旅程，<br>从源头清晰可见。</h2><p class="bodycopy">围绕食材源头与餐饮终端，阳坊大都持续建设肉食品加工基地与供应链能力，让品牌对品质的追求拥有更坚实的产业支撑。</p></div>
+ <div class="supply-flow">
+  <div class="supply-step reveal"><div class="supply-node"><svg viewBox="0 0 40 40"><path d="M4 29 Q12 16 20 23 T36 20 M5 34 Q17 27 36 30 M8 13 Q18 4 28 12"/></svg></div><h3>草原牧场</h3><p>苏尼特草原<br>源头寻访与羊源选择</p></div>
+  <div class="supply-step reveal delay1"><div class="supply-node"><svg viewBox="0 0 40 40"><path d="M6 32 V15 L20 7 L34 15 V32Z M6 16 H34 M14 32 V22 H26 V32 M20 7 V1"/></svg></div><h3>加工基地</h3><p>苏尼特左旗<br>现代化肉食品加工</p></div>
+  <div class="supply-step reveal delay2"><div class="supply-node"><svg viewBox="0 0 40 40"><path d="M5 10 H35 V31 H5Z M11 16 H29 M11 22 H25 M11 27 H20 M2 35 H38"/></svg></div><h3>供应链体系</h3><p>加工与配送协同<br>支持餐饮经营</p></div>
+  <div class="supply-step reveal delay3"><div class="supply-node"><svg viewBox="0 0 40 40"><path d="M4 30 Q20 35 36 30 L32 13 H8Z M8 13 L20 5 L32 13 M14 20 H26 M20 15 V27"/></svg></div><h3>餐桌体验</h3><p>直营与品牌连锁<br>将风味带给更多顾客</p></div>
+ </div>
+ <div class="supply-metric reveal"><div class="metric"><strong>9000<span style="font-size:22px">余万元</span></strong><span>2012年投资建设肉食品加工产业基地<br>体现品牌对源头与加工体系的长期投入</span></div><div class="metric"><strong>20<span style="font-size:22px">万羊单位</span></strong><span>资料记载的年加工能力<br>加工基地产业规模指标</span></div></div>
+</section>
+
+
+<section class="v4-detail" id="brand-system">
+ <div class="v4-detail-top reveal">
+  <div><div class="kicker">A COMPLETE QUALITY SYSTEM / 品质体系</div><h2>把每一个环节，<br>都做成看得见的坚持。</h2></div>
+  <p>一桌涮羊肉的品质，不只来自某一个环节。产地选择、加工管理、鲜切呈现、传统涮煮与服务体验彼此衔接，才构成消费者能够感受到的完整品牌体验。</p>
+ </div>
+ <div class="v4-window-grid">
+  <article class="v4-window reveal"><div class="v4-window-bar"><i></i><i></i><i></i><small>01 / SOURCE SELECTION</small></div><div class="v4-window-body"><span class="eyebrow">源头 · 产地</span><h3>从草原开始认真挑选</h3><p>关注羊种、产区与自然环境，选择适合传统铜锅涮煮的羊肉原料。以源头选择为品质管理的第一步。</p><span class="tag">内蒙古锡林郭勒</span><span class="tag">苏尼特羊</span><span class="shape"></span></div></article>
+  <article class="v4-window reveal"><div class="v4-window-bar"><i></i><i></i><i></i><small>02 / PROCESSING</small></div><div class="v4-window-body"><span class="eyebrow">加工 · 管理</span><h3>让源头品质稳定延续</h3><p>在苏尼特左旗建设肉食品加工基地，围绕原料加工与供应链协同，建立从产地到餐饮端的产业支撑。</p><span class="tag">肉食品加工基地</span><span class="tag">供应链协同</span><span class="shape"></span></div></article>
+  <article class="v4-window reveal"><div class="v4-window-bar"><i></i><i></i><i></i><small>03 / DINING EXPERIENCE</small></div><div class="v4-window-body"><span class="eyebrow">餐饮 · 体验</span><h3>让经典风味落在餐桌</h3><p>以传统铜锅、炭火、清汤与鲜切羊肉为核心，结合门店环境与服务细节，呈现熟悉而有温度的涮肉体验。</p><span class="tag">铜锅炭火</span><span class="tag">清汤涮肉</span><span class="shape"></span></div></article>
+ </div>
+ <div class="v4-marquee-panel reveal"><strong>从一片草原，到一桌团圆。</strong><span>ORIGIN → CRAFT → SUPPLY → DINING</span></div>
+ <div class="v4-flow reveal">
+  <div class="v4-flow-item"><em>STEP 01</em><b>草原寻源</b><small>产区走访 · 羊源选择</small></div>
+  <div class="v4-flow-item"><em>STEP 02</em><b>加工管理</b><small>肉食品加工 · 品质管理</small></div>
+  <div class="v4-flow-item"><em>STEP 03</em><b>供应协同</b><small>加工配送 · 经营支持</small></div>
+  <div class="v4-flow-item"><em>STEP 04</em><b>门店呈现</b><small>鲜切羊肉 · 传统涮煮</small></div>
+  <div class="v4-flow-item"><em>STEP 05</em><b>餐桌体验</b><small>服务细节 · 相聚时刻</small></div>
+ </div>
+</section>
+
+<section class="timeline" id="history">
+ <div class="timeline-top reveal"><div><div class="kicker">06 / OUR JOURNEY</div><h2>时间，见证每一步坚持。</h2><p class="bodycopy" style="color:#666b61">从阳坊的一份传统风味，到不断延展的品牌与产业布局。</p></div><div class="timeline-controls"><button id="prev" aria-label="向左">←</button><button id="next" aria-label="向右">→</button></div></div>
+ <div class="timeline-window"><div class="timeline-row" id="timelineRow">
+  <article class="year-card"><strong>1990</strong><h3>品牌创立</h3><p>阳坊大都涮羊肉始创于北京昌平阳坊，开启品牌发展历程。</p></article>
+  <article class="year-card"><strong>2000</strong><h3>饭庄成立</h3><p>北京市阳坊大都饭庄成立，品牌经营持续发展。</p></article>
+  <article class="year-card"><strong>2001</strong><h3>公司成立</h3><p>北京阳坊大都文化发展有限公司正式注册成立。</p></article>
+  <article class="year-card"><strong>2003</strong><h3>经营网络拓展</h3><p>通过设立分支机构等方式，逐步拓展经营网络。</p></article>
+  <article class="year-card"><strong>2012</strong><h3>加工基地建设</h3><p>在内蒙古苏尼特左旗投资建设肉食品加工产业基地。</p></article>
+  <article class="year-card"><strong>2024</strong><h3>业务拓展</h3><p>经营范围增加供应链管理、互联网销售等相关业务。</p></article>
+  <article class="year-card"><strong>2025</strong><h3>连锁发展</h3><p>取得餐饮服务连锁管理资质，持续完善品牌经营体系。</p></article>
+ </div></div>
+</section>
+
+<section class="culture">
+ <div class="reveal"><div class="kicker">07 / BRAND CULTURE</div><h2>不止于一餐，<br>更是一份长期坚持。</h2><p class="bodycopy">在传承传统饮食文化的同时，持续创新经营方式；在关注顾客体验的同时，也重视团队成长与社会责任。</p></div>
+ <div class="culture-grid">
+  <article class="culture-card reveal"><span class="cn">01 / HERITAGE</span><h3>传承 · 老味道</h3><p>尊重老北京传统饮食文化，将铜锅涮羊肉的经典风味延续至当代餐桌。</p></article>
+  <article class="culture-card reveal delay1"><span class="cn">02 / INNOVATION</span><h3>创新 · 向前走</h3><p>在坚守传统特色的基础上，持续优化产品、服务与连锁经营体系。</p></article>
+  <article class="culture-card reveal delay2"><span class="cn">03 / PEOPLE</span><h3>以人为本</h3><p>重视员工培养与团队成长，鼓励共同参与品牌建设与发展。</p></article>
+  <article class="culture-card reveal"><span class="cn">04 / RESPONSIBILITY</span><h3>责任 · 共成长</h3><p>积极参与社区建设与公益行动，关注企业发展与社会价值的连接。</p></article>
+  <article class="culture-card reveal delay1"><span class="cn">05 / EXPERIENCE</span><h3>体验 · 有温度</h3><p>从食材、环境到服务，关注顾客每一次相聚中的真实体验。</p></article>
+  <article class="culture-card reveal delay2"><span class="cn">06 / QUALITY</span><h3>品质 · 长久做</h3><p>以“好羊肉，清汤涮”为核心理念，把对食材本味的坚持融入日常经营。</p></article>
+ </div>
+</section>
+
+<section class="end">
+ <svg class="end-art" viewBox="0 0 800 500" fill="none" aria-hidden="true"><g stroke="#c6a875" stroke-opacity=".7"><ellipse cx="400" cy="250" rx="340" ry="115"/><ellipse cx="400" cy="250" rx="285" ry="170" transform="rotate(35 400 250)"/><ellipse cx="400" cy="250" rx="285" ry="170" transform="rotate(-35 400 250)"/><circle cx="400" cy="250" r="200" stroke-dasharray="2 9"/></g><circle cx="400" cy="250" r="5" fill="#c6a875"/></svg>
+ <div class="end-content reveal"><div class="kicker" style="justify-content:center">YANGFANG DADU · EST. 1990</div><h2>阳坊大都</h2><p>好羊肉，清汤涮。</p><div class="end-line"></div></div>
+</section>
+</main>
+<footer><b>阳坊大都</b><span>YANGFANG DADU · EST. 1990</span><span>源自阳坊 · 味承匠心</span><span>BEIJING / CHINA</span></footer>
+<script>
+const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
+const header=$('#header'),progress=$('#progress'),pointer=$('#pointer'),nav=$('#nav');
+document.body.insertAdjacentHTML('beforeend','<div class="v4-pop">YANGFANG DADU · EST. 1990</div>');
+// Soft parallax for decorative visual elements; disabled for reduced-motion preferences.
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
+  window.addEventListener('scroll',()=>{
+    const y=window.scrollY;
+    document.querySelectorAll('.v4-orbit').forEach((el,i)=>{el.style.transform=`rotate(${y*.035+i*18}deg)`});
+    document.querySelectorAll('.v4-glow').forEach((el,i)=>{el.style.transform=`translateY(${(y*.025)%36}px)`});
+  },{passive:true});
+}
+window.addEventListener('scroll',()=>{let y=scrollY,max=document.documentElement.scrollHeight-innerHeight;header.classList.toggle('solid',y>40);progress.style.width=(max?y/max*100:0)+'%'},{passive:true});
+const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target)}}),{threshold:.13});
+$$('.reveal').forEach(el=>io.observe(el));
+$('#menu').addEventListener('click',()=>nav.classList.toggle('open'));
+nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>nav.classList.remove('open')));
+if(matchMedia('(pointer:fine)').matches){window.addEventListener('mousemove',e=>{pointer.style.left=e.clientX+'px';pointer.style.top=e.clientY+'px'});$$('a,button,.process-card,.culture-card').forEach(el=>{el.addEventListener('mouseenter',()=>pointer.classList.add('big'));el.addEventListener('mouseleave',()=>pointer.classList.remove('big'))})}
+let offset=0;const row=$('#timelineRow'),cards=[...row.children],step=308;
+function slide(dir){const max=Math.max(0,row.scrollWidth-row.parentElement.clientWidth);offset=Math.min(max,Math.max(0,offset+dir*step));row.style.transform=`translateX(${-offset}px)`}
+$('#next').addEventListener('click',()=>slide(1));$('#prev').addEventListener('click',()=>slide(-1));
+window.addEventListener('resize',()=>{offset=0;row.style.transform='translateX(0)'});
+</script>
+</body></html>
